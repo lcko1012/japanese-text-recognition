@@ -9,12 +9,15 @@ import lib.config.alphabets as alphabets
 import yaml
 from easydict import EasyDict as edict
 import argparse
- 
+
+
 def parse_arg():
     parser = argparse.ArgumentParser(description="demo")
 
-    parser.add_argument('--cfg', help='experiment configuration filename', type=str, default='lib/config/OWN_config.yaml')
-    # parser.add_argument('--image_path', type=str, default='detector_outputs/test10_crops/crop_5.png', help='the path to your image')
+    parser.add_argument('--cfg', help='experiment configuration filename', type=str,
+                        default='lib/config/OWN_config.yaml')
+    # parser.add_argument('--image_path', type=str, default='detector_outputs/test10_crops/crop_5.png', help='the
+    # path to your image')
     parser.add_argument('--checkpoint', type=str, default='output/checkpoints/checkpoint_24_acc_0.9469.pth',
                         help='the path to your checkpoints')
 
@@ -29,11 +32,13 @@ def parse_arg():
 
     return config, args
 
+
 def recognition(config, img, model, converter, device):
     # github issues: https://github.com/Sierkinhane/CRNN_Chinese_Characters_Rec/issues/211
     h, w = img.shape
     # fisrt step: resize the height and width of image to (32, x)
-    img = cv2.resize(img, (0, 0), fx=config.MODEL.IMAGE_SIZE.H / h, fy=config.MODEL.IMAGE_SIZE.H / h, interpolation=cv2.INTER_CUBIC)
+    img = cv2.resize(img, (0, 0), fx=config.MODEL.IMAGE_SIZE.H / h, fy=config.MODEL.IMAGE_SIZE.H / h,
+                     interpolation=cv2.INTER_CUBIC)
 
     # second step: keep the ratio of image's text same with training
     h, w = img.shape
@@ -61,8 +66,8 @@ def recognition(config, img, model, converter, device):
     # print('results: {0}'.format(sim_pred))
     return sim_pred
 
-def predict(image_path):
 
+def predict(image_path):
     config, args = parse_arg()
     device = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
 
@@ -86,6 +91,3 @@ def predict(image_path):
     # print('elapsed time: {0}'.format(finished - started))
 
     return result
-
-
-
