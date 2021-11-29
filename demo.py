@@ -12,18 +12,17 @@ import argparse
 
 
 def parse_arg():
-    parser = argparse.ArgumentParser(description="demo")
+    #parser = argparse.ArgumentParser(description="demo")
 
-    parser.add_argument('--cfg', help='experiment configuration filename', type=str,
-                        default='lib/config/OWN_config.yaml')
-    # parser.add_argument('--image_path', type=str, default='detector_outputs/test10_crops/crop_5.png', help='the
-    # path to your image')
-    parser.add_argument('--checkpoint', type=str, default='output/checkpoints/checkpoint_24_acc_0.9469.pth',
-                        help='the path to your checkpoints')
+    # parser.add_argument('--cfg', help='experiment configuration filename', type=str,default='/var/www/html/lib/config/OWN_config.yaml')
+    # parser.add_argument('--image_path', type=str, default='detector_outputs/test10_crops/crop_5.png', help='the path to your image')
+    #parser.add_argument('--checkpoint', type=str, default='/var/www/html/output/checkpoints/checkpoint_24_acc_0.9469.pth',
+    #                   help='the path to your checkpoints')
 
-    args = parser.parse_args()
-
-    with open(args.cfg, 'r') as f:
+    #parser.cfg = '/var/www/html/lib/config/OWN_config.yaml'
+    #parser.checkpoint= '/var/www/html/output/checkpoints/checkpoint_24_acc_0.9469.pth'
+    args = '/var/www/html/output/checkpoints/checkpoint_24_acc_0.9469.pth'
+    with open('/var/www/html/lib/config/OWN_config.yaml', 'r') as f:
         config = yaml.safe_load(f)
         config = edict(config)
 
@@ -73,7 +72,7 @@ def predict(image_path):
 
     model = crnn.get_crnn(config).to(device)
     # print('loading pretrained model from {0}'.format(args.checkpoint))
-    checkpoint = torch.load(args.checkpoint, map_location=torch.device('cpu'))
+    checkpoint = torch.load(args, map_location=torch.device('cpu'))
     if 'state_dict' in checkpoint.keys():
         model.load_state_dict(checkpoint['state_dict'])
     else:
